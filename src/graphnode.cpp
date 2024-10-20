@@ -11,7 +11,7 @@ GraphNode::~GraphNode()
     //// STUDENT CODE
     ////
 
-    delete _chatBot; 
+    // delete _chatBot; // No manual deletion needed; unique_ptr will automatically release memory
 
     ////
     //// EOF STUDENT CODE
@@ -24,25 +24,28 @@ void GraphNode::AddToken(std::string token)
 
 void GraphNode::AddEdgeToParentNode(GraphEdge *edge)
 {
-    _parentEdges.push_back(edge);
+    _parentEdges.push_back(edge); // non-owning reference (raw pointer)
 }
 
-void GraphNode::AddEdgeToChildNode(GraphEdge *edge)
+void GraphNode::AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge)
 {
-    _childEdges.push_back(edge);
+    _childEdges.push_back(std::move(edge)); // transfer ownership with move semantics 
 }
 
 //// STUDENT CODE
 ////
-void GraphNode::MoveChatbotHere(ChatBot *chatbot)
+void GraphNode::MoveChatbotHere(ChatBot &&chatbot)
 {
-    _chatBot = chatbot;
+    // _chatBot = chatbot; 
+    // implementing the move logic 
+    _chatBot = std::make_unique<ChatBot>(std::move(chatbot)); 
     _chatBot->SetCurrentNode(this);
 }
 
 void GraphNode::MoveChatbotToNewNode(GraphNode *newNode)
 {
-    newNode->MoveChatbotHere(_chatBot);
+    // Move the ChatBot to the new node by dereferencing and moving the unique_ptr
+    newNode->MoveChatbotHere(std::move(*_chatBot));
     _chatBot = nullptr; // invalidate pointer at source
 }
 ////
@@ -53,7 +56,7 @@ GraphEdge *GraphNode::GetChildEdgeAtIndex(int index)
     //// STUDENT CODE
     ////
 
-    return _childEdges[index];
+    return _childEdges[index].get(); // return raw pointer to outgoing edge 
 
     ////
     //// EOF STUDENT CODE

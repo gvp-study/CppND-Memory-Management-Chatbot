@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <memory> // for smart pointers 
 #include "chatbot.h"
 
 
@@ -16,11 +17,12 @@ private:
     ////
 
     // data handles (owned)
-    std::vector<GraphEdge *> _childEdges;  // edges to subsequent nodes
+    std::vector<std::unique_ptr<GraphEdge>> _childEdges;  // edges to subsequent nodes // outgoing edges (unique ownership)
 
     // data handles (not owned)
-    std::vector<GraphEdge *> _parentEdges; // edges to preceding nodes 
-    ChatBot *_chatBot;
+    std::vector<GraphEdge *> _parentEdges; // edges to preceding nodes // incoming edges (non-owning references) 
+    // ChatBot *_chatBot;
+    std::unique_ptr<ChatBot> _chatBot; 
 
     ////
     //// EOF STUDENT CODE
@@ -44,12 +46,13 @@ public:
     // proprietary functions
     void AddToken(std::string token); // add answers to list
     void AddEdgeToParentNode(GraphEdge *edge);
-    void AddEdgeToChildNode(GraphEdge *edge);
+    void AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge); // Add outgoing edge (owning)
 
     //// STUDENT CODE
     ////
 
-    void MoveChatbotHere(ChatBot *chatbot);
+    // void MoveChatbotHere(ChatBot *chatbot);
+    void MoveChatbotHere(ChatBot &&chatbot); // we change it to accept an rvalue reference for ChatBot
 
     ////
     //// EOF STUDENT CODE
