@@ -21,8 +21,9 @@ private:
 
     // data handles (not owned)
     std::vector<GraphEdge *> _parentEdges; // edges to preceding nodes // incoming edges (non-owning references) 
-    // ChatBot *_chatBot;
-    std::unique_ptr<ChatBot> _chatBot; 
+//    ChatBot *_chatBot;
+    // std::unique_ptr<ChatBot> _chatBot; 
+    ChatBot _chatBot; 
 
     ////
     //// EOF STUDENT CODE
@@ -52,7 +53,8 @@ public:
     ////
 
     // void MoveChatbotHere(ChatBot *chatbot);
-    void MoveChatbotHere(ChatBot &&chatbot); // we change it to accept an rvalue reference for ChatBot
+    // void MoveChatbotHere(ChatBot &&chatbot); // we change it to accept an rvalue reference for ChatBot
+    void MoveChatbotHere(ChatBot chatbot);
 
     ////
     //// EOF STUDENT CODE

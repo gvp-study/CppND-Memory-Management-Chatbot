@@ -62,6 +62,8 @@ ChatBot::ChatBot(const ChatBot &source)
     _currentNode = source._currentNode; // shallow copy of node pointers 
     _rootNode = source._rootNode; 
     _chatLogic = source._chatLogic; 
+    _chatLogic->SetChatbotHandle(this); 
+
 } 
 
 // Copy Assignment Operator 
@@ -73,7 +75,7 @@ ChatBot &ChatBot::operator=(const ChatBot &source)
     {
         return *this; // Self-assignment protection
     }
-
+/*
     // Deallocate existing resources 
     if(_image != nullptr)
     {
@@ -89,16 +91,18 @@ ChatBot &ChatBot::operator=(const ChatBot &source)
     {
         _image = nullptr;
     } 
-
+*/
     _currentNode = source._currentNode; // shallow copy of node pointers 
     _rootNode = source._rootNode; 
     _chatLogic = source._chatLogic; 
+    _image = new wxBitmap(*source._image);
+    _chatLogic->SetChatbotHandle(this);
 
     return *this;
 }
 
 // Move Constructor 
-ChatBot::ChatBot(ChatBot &&source) noexcept
+ChatBot::ChatBot(ChatBot &&source) 
 {
     std::cout << "ChatBot Move Constructor" << std::endl; 
 
@@ -107,7 +111,8 @@ ChatBot::ChatBot(ChatBot &&source) noexcept
     _currentNode = source._currentNode; 
     _rootNode = source._rootNode; 
     _chatLogic = source._chatLogic; 
-    _chatLogic->SetChatbotHandle(this); // for deallocation 
+//    _chatLogic->SetChatbotHandle(this); // for deallocation 
+    this->_chatLogic->SetChatbotHandle(this);
 
     // Invalidate source object's pointers
     source._image = nullptr; 
@@ -117,7 +122,7 @@ ChatBot::ChatBot(ChatBot &&source) noexcept
 } 
 
 // Move Assignment Operator 
-ChatBot &ChatBot::operator=(ChatBot &&source) noexcept 
+ChatBot &ChatBot::operator=(ChatBot &&source)  
 {
     std::cout << "ChatBot Move Assignment Operator" << std::endl; 
 
@@ -127,9 +132,9 @@ ChatBot &ChatBot::operator=(ChatBot &&source) noexcept
     }
 
     // Deallocate existing resources 
-    if(_image != nullptr) 
+    if(this->_image != nullptr) 
     {
-        delete _image; 
+        delete this->_image; 
     }
 
     // Steal resources 

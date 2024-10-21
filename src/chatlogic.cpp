@@ -16,13 +16,13 @@ ChatLogic::ChatLogic()
 {
     //// STUDENT CODE
     ////
-
+/*
     // create instance of chatbot
     _chatBot = new ChatBot("../images/chatbot.png");
 
     // add pointer to chatlogic so that chatbot answers can be passed on to the GUI
     _chatBot->SetChatLogicHandle(this);
-
+*/
     ////
     //// EOF STUDENT CODE
 }
@@ -33,7 +33,7 @@ ChatLogic::~ChatLogic()
     ////
 
     // delete chatbot instance
-    delete _chatBot;
+//    delete _chatBot;
 // Smart pointers will automatically clean up memory, no need for manual deletion
 /*
     // delete all nodes
@@ -172,7 +172,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             // store reference in child node and parent node
                             (*childNode)->AddEdgeToParentNode(edge.get()); // non-owning reference 
                             (*parentNode)->AddEdgeToChildNode(std::move(edge)); // transfer ownership
-                            _edges.push_back(std::move(edge));
+ //                           _edges.push_back(std::move(edge));
                         }
 
                         ////
@@ -197,8 +197,6 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
     //// STUDENT CODE
     ////
-    
-    ChatBot chatBot("../images/chatbot.png"); // chatbot image is loaded here
 
     // identify root node (the node with no parent edges)
     GraphNode *rootNode = nullptr;
@@ -210,7 +208,8 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
             if (rootNode == nullptr)
             {
-                rootNode = (*it).get(); // assign current node to root
+//                rootNode = (*it).get(); // assign current node to root
+                rootNode = it->get(); 
             }
             else
             {
@@ -223,7 +222,10 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     _chatBot->SetRootNode(rootNode);
     rootNode->MoveChatbotHere(_chatBot);
 */
-    rootNode->MoveChatbotHere(std::move(chatBot)); // Move the ChatBot instance into the root node
+    ChatBot stackChatBot("../images/chatbot.png"); // chatbot image is loaded here
+    stackChatBot.SetChatLogicHandle(this); 
+    stackChatBot.SetRootNode(rootNode);
+    rootNode->MoveChatbotHere(std::move(stackChatBot)); // Move the ChatBot instance into the root node
     // Now ChatLogic is no longer responsible for managing ChatBot's memory
     // _chatBot is used only as a communication handle between GUI and ChatBot
     

@@ -32,8 +32,8 @@ public:
     // Rule of Five methods
     ChatBot(const ChatBot &source);                // cope constractor 
     ChatBot &operator=(const ChatBot &source);     // copy assignment operator 
-    ChatBot(ChatBot &&source) noexcept;            // move constructor 
-    ChatBot &operator=(ChatBot &&source) noexcept; // move assignment operator 
+    ChatBot(ChatBot &&source);            // move constructor 
+    ChatBot &operator=(ChatBot &&source); // move assignment operator 
     ////
     //// EOF STUDENT CODE
 
