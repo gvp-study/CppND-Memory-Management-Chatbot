@@ -44,7 +44,114 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+// Copy Constructor
+ChatBot::ChatBot(const ChatBot &source)
+{
+    std::cout << "ChatBot Copy Constructor" << std::endl; 
 
+    // Deep copy image 
+    if(source._image != nullptr)
+    {
+        _image = new wxBitmap(*source._image); 
+    }
+    else 
+    {
+        _image = nullptr; 
+    }
+
+    _currentNode = source._currentNode; // shallow copy of node pointers 
+    _rootNode = source._rootNode; 
+    _chatLogic = source._chatLogic; 
+    _chatLogic->SetChatbotHandle(this); 
+
+} 
+
+// Copy Assignment Operator 
+ChatBot &ChatBot::operator=(const ChatBot &source) 
+{
+    std::cout << "ChatBot Copy Assignment Operator" << std::endl;
+
+    if(this == &source)
+    {
+        return *this; // Self-assignment protection
+    }
+/*
+    // Deallocate existing resources 
+    if(_image != nullptr)
+    {
+        delete _image;
+    }
+
+    // Depp copy image 
+    if(source._image != nullptr)
+    {
+        _image = new wxBitmap(*source._image);
+    }
+    else 
+    {
+        _image = nullptr;
+    } 
+*/
+    _currentNode = source._currentNode; // shallow copy of node pointers 
+    _rootNode = source._rootNode; 
+    _chatLogic = source._chatLogic; 
+    _image = new wxBitmap(*source._image);
+    _chatLogic->SetChatbotHandle(this);
+
+    return *this;
+}
+
+// Move Constructor 
+ChatBot::ChatBot(ChatBot &&source) 
+{
+    std::cout << "ChatBot Move Constructor" << std::endl; 
+
+    // Steal resources (transfer data ownership) 
+    _image = source._image; 
+    _currentNode = source._currentNode; 
+    _rootNode = source._rootNode; 
+    _chatLogic = source._chatLogic; 
+//    _chatLogic->SetChatbotHandle(this); // for deallocation 
+    this->_chatLogic->SetChatbotHandle(this);
+
+    // Invalidate source object's pointers
+    source._image = nullptr; 
+    source._currentNode = nullptr; 
+    source._rootNode = nullptr; 
+    source._chatLogic = nullptr;  
+} 
+
+// Move Assignment Operator 
+ChatBot &ChatBot::operator=(ChatBot &&source)  
+{
+    std::cout << "ChatBot Move Assignment Operator" << std::endl; 
+
+    if(this == &source)
+    {
+        return *this; // self-assignment protection 
+    }
+
+    // Deallocate existing resources 
+    if(this->_image != nullptr) 
+    {
+        delete this->_image; 
+    }
+
+    // Steal resources 
+    _image = source._image; 
+    _currentNode = source._currentNode; 
+    _rootNode = source._rootNode; 
+    _chatLogic = source._chatLogic; 
+    _chatLogic->SetChatbotHandle(this); // for deallocation 
+
+    // Invalidate source 
+    source._image = nullptr; 
+    source._currentNode = nullptr; 
+    source._rootNode = nullptr; 
+    source._chatLogic = nullptr;
+
+    return *this; 
+}
 ////
 //// EOF STUDENT CODE
 
