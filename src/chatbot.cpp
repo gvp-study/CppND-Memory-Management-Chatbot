@@ -54,6 +54,21 @@ ChatBot::ChatBot(const ChatBot &source)
     _rootNode = source._rootNode;
     _currentNode = source._currentNode;
 }
+
+ChatBot &ChatBot::operator=(const ChatBot &source)
+{
+    std::cout << "ChatBot Copy Assignment Operator" << std::endl;
+
+    if(this == &source) return *this;
+    if(_image != nullptr) {delete _image; _image = nullptr;}
+    if(source._image != nullptr) image = new wxBitmap(*source._image);
+    else _image = nullptr;
+    
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+    return *this;
+}
 ////
 //// EOF STUDENT CODE
 
