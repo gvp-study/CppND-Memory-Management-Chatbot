@@ -77,7 +77,7 @@ ChatBot::ChatBot(ChatBot &&source)
     _chatLogic = source._chatLogic;
     _rootNode = source._rootNode;
     _currentNode = source._currentNode;
-
+    _chatLogic->SetChatbotHandle(this);
     source._image = nullptr;
     source._chatLogic = nullptr;
     source._rootNode = nullptr;
@@ -93,9 +93,13 @@ ChatBot &ChatBot::operator=(ChatBot &&source)
     _chatLogic = source._chatLogic;
     _rootNode = source._rootNode;
     _currentNode = source._currentNode;
+    _chatLogic->SetChatbotHandle(this);
+    source._image = nullptr;
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._currentNode = nullptr;
     return *this;
 }
-////
 //// EOF STUDENT CODE
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
