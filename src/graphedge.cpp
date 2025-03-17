@@ -4,6 +4,7 @@
 GraphEdge::GraphEdge(int id)
 {
     _id = id;
+    _keywords.clear();
 }
 
 void GraphEdge::SetChildNode(GraphNode *childNode)
