@@ -58,7 +58,7 @@ ChatBot::ChatBot(const ChatBot &source)
 //  Copy assignment operator
 ChatBot& ChatBot::operator=(const ChatBot &source)
 {
-    std::cout << "ChatBot Copy Assignment(=)" << std::endl;
+    std::cout << "ChatBot Copy Assignment" << std::endl;
 
     if(this == &source)
         return *this;
@@ -91,7 +91,7 @@ ChatBot::ChatBot(ChatBot &&source)
 // Move Constructor
 ChatBot& ChatBot::operator=(ChatBot &&source)
 {
-    std::cout << "ChatBot Move Assignment(=)" << std::endl;
+    std::cout << "ChatBot Move Assignment" << std::endl;
 
     _image = source._image;
     _currentNode = source._currentNode;
