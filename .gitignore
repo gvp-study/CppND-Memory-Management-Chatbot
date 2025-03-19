@@ -4,4 +4,3 @@ settings.json
 *.o
 build/*
 *.json
-.github/**
